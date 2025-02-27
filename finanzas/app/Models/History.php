@@ -10,7 +10,9 @@ class History extends Model
     use HasFactory;
 
     protected $table = 'histories';
-    protected $primaryKey = 'id_history';
+    protected $primaryKey = 'id';
+
+    public $timestamps = false;
 
     protected $fillable = ['id_user', 'total_entries', 'total_expenses', 'month', 'year'];
 

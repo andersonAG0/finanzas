@@ -10,12 +10,15 @@ class Expense extends Model
     use HasFactory;
 
     protected $table = 'expenses';
-    protected $primaryKey = 'id_expense';
+    protected $primaryKey = 'id';
 
-    protected $fillable = ['id_usuario', 'category', 'description', 'type', 'amount', 'date'];
+    public $timestamps = false;
+
+    protected $fillable = ['id_user', 'category', 'description', 'type', 'amount', 'date'];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
+
 }

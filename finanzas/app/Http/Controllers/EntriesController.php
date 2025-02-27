@@ -49,12 +49,8 @@ class EntriesController extends Controller
         return view('entries.edit', compact('entrie'));
     }
 
-    public function update(Request $request, Entrie $entrie)
+    public function update(Request $request, $id)
     {
-        if ($entrie->id_user !== Auth::id()) {
-            abort(403);
-        }
-
         $request->validate([
             'source' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -62,18 +58,23 @@ class EntriesController extends Controller
             'date' => 'required|date',
         ]);
 
-        $entrie->update($request->all());
+        $entrie = Entrie::find($id);
+
+        $entrie->source = $request->source;
+        $entrie->description = $request->description;
+        $entrie->amount = $request->amount;
+        $entrie->date = $request->date;
+        $entrie->save();
 
         return redirect()->route('entries.index')->with('success', 'Ingreso actualizado correctamente.');
     }
 
-    public function destroy(Entrie $entrie)
+    public function destroy($id)
     {
+        $entrie = Entrie::find($id);
 
         $entrie->delete();
 
-        $entries = Entrie::where('id_user', Auth::id())->orderBy('date', 'asc')->get();
-        $totalEntries = $entries->sum('amount');
-        return redirect()->route('entries.index', compact('entries', 'totalEntries'))->with('success', 'Ingreso eliminado correctamente.');
+        return redirect()->route('entries.index')->with('success', 'Ingreso eliminado correctamente.');
     }
 }

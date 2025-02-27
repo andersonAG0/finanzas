@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
-            $table->decimal('total_entries', 10, 2);
-            $table->decimal('total_expenses', 10, 2);
+            $table->integer('total_entries')->default(0);
+            $table->integer('total_expenses')->default(0);
             $table->integer('month')->checkBetween(1, 12);
             $table->integer('year');
         });
